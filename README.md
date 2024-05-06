@@ -1,5 +1,21 @@
 # how
 
+cli tool to ask ai for commands in plain english
+
+## Usage
+
+just type any request you have starting with `how`:
+
+```bash
+how <command>
+```
+
+## Examples
+
+> TODO
+
+## Development
+
 To install dependencies:
 
 ```bash
@@ -9,7 +25,11 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun how
 ```
 
-This project was created using `bun init` in bun v1.1.7. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+To compile:
+
+```bash
+bun compile
+```
