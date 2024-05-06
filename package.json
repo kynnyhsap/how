@@ -2,10 +2,19 @@
   "name": "how",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "how": "bun run index.ts --"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "clipboardy": "^4.0.0",
+    "groq-sdk": "^0.3.3",
+    "openai": "^4.42.0"
   }
 }
