@@ -1,20 +1,24 @@
 # how
 
-cli tool to ask ai for commands in plain english
+CLI tool to ask AI for commands in plain english.
 
 ## Usage
 
-just type any request you have starting with `how`:
+Just type any request starting with `how`:
 
 ```bash
-how <command>
+how to create a git branch
 ```
 
-<img src="demo.gif" width="200">
+```bash
+how to convert video to gif with ffmpeg
+```
 
-## Examples
+```bash
+how to upgrade node to latest version
+```
 
-> TODO
+<img src="./demo.gif">
 
 ## Development
 
