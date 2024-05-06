@@ -10,6 +10,8 @@ just type any request you have starting with `how`:
 how <command>
 ```
 
+<img src="demo.gif" width="200">
+
 ## Examples
 
 > TODO
