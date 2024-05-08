@@ -2,6 +2,19 @@
 
 CLI tool to ask AI for commands in plain english.
 
+## Roadmap
+
+- [x] basic functionality
+- [ ] installation script
+- [ ] versioning
+- [ ] local inference
+- [ ] fine-tuned llm
+- [ ] rewrite in zig for smaler binary
+
+## Installation
+
+> Comming soon...
+
 ## Usage
 
 Just type any request starting with `how`:
