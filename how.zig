@@ -1,8 +1,30 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const http = std.http;
 const heap = std.heap;
 
 const exit = std.process.exit;
+
+const arch = builtin.target.osArchName();
+const platform = @tagName(builtin.os.tag);
+
+const systemPrompt =
+    \\You are "how", a CLI command generator.
+    \\
+    \\First line of the response is the description in one sentence.
+    \\Subsequent lines of the response are the CLI commands to achieve user's goal.
+    \\Do not add anything else, no markdown, just pain text.
+    \\
+    \\System Info:
+++ " " ++ platform ++ " " ++ arch ++ "\n" ++
+    \\Example input:
+    \\how to build and install go binary
+    \\
+    \\Example output:
+    \\Building and installing a Go binary
+    \\go build main.go
+    \\go install main
+;
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const API_KEY = "";
@@ -82,38 +104,47 @@ pub fn main() !void {
     var req = FetchReq.init(gpa);
     defer req.deinit();
 
-    // POST request
-    {
-        const message = ChatMessage{
-            .role = "user",
-            .content = "2+2=?",
-        };
+    const data = ChatCompelitionRequestBody{
+        .model = "gpt-4o",
+        .messages = &[_]ChatMessage{
+            ChatMessage{
+                .role = "system",
+                .content = systemPrompt,
+            },
+            ChatMessage{
+                .role = "user",
+                .content = "how to get the size of directory",
+            },
+        },
+    };
 
-        const data = ChatCompelitionRequestBody{
-            .model = "gpt-4o",
-            .messages = &[_]ChatMessage{message},
-        };
+    const json_data = try std.json.stringifyAlloc(gpa, data, .{});
+    defer gpa.free(json_data);
 
-        const json_data = try std.json.stringifyAlloc(gpa, data, .{});
-        defer gpa.free(json_data);
+    const res = try req.post(OPENAI_URL, json_data);
 
-        const res = try req.post(OPENAI_URL, json_data);
+    const body = try req.body.toOwnedSlice();
+    defer req.allocator.free(body);
 
-        const body = try req.body.toOwnedSlice();
-        defer req.allocator.free(body);
-
-        if (res.status != .ok) {
-            std.log.err("Request Failed \n\n {?s}\n", .{body});
-            std.process.exit(1);
-        }
-
-        const parsed = try std.json.parseFromSlice(ChatCompletionResponseBody, gpa, body, .{
-            .ignore_unknown_fields = true,
-        });
-        defer parsed.deinit();
-
-        const content = parsed.value.choices[0].message.content;
-
-        std.debug.print("[RESPONSE] {s}\n", .{content});
+    if (res.status != .ok) {
+        std.log.err("Request Failed \n\n {?s}\n", .{body});
+        std.process.exit(1);
     }
+
+    const parsed = try std.json.parseFromSlice(ChatCompletionResponseBody, gpa, body, .{ .ignore_unknown_fields = true });
+    defer parsed.deinit();
+
+    const content = parsed.value.choices[0].message.content;
+
+    var it = std.mem.splitAny(u8, content, "\n");
+
+    const description = it.first();
+
+    std.debug.print("\x1b[1;34m\n{s}\n\n\x1b[0m", .{description});
+
+    while (it.next()) |x| {
+        std.debug.print("\x1b[1;90m\t$ {s}\n\x1b[0m", .{x});
+    }
+
+    std.debug.print("\n", .{});
 }
