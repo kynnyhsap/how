@@ -95,13 +95,26 @@ const FetchReq = struct {
 };
 
 pub fn main() !void {
-    var gpa_impl = heap.GeneralPurposeAllocator(.{}){};
-    defer if (gpa_impl.deinit() == .leak) {
-        std.log.warn("Has leaked\n", .{});
+    var gpa = heap.GeneralPurposeAllocator(.{}){};
+    defer if (gpa.deinit() == .leak) {
+        std.log.warn("🚰 leaked 🚰 \n", .{});
     };
-    const gpa = gpa_impl.allocator();
+    const allocator = gpa.allocator();
 
-    var req = FetchReq.init(gpa);
+    var words = std.ArrayList(u8).init(allocator);
+    defer words.deinit();
+
+    var args = std.process.args();
+    _ = args.next(); // skip the program name
+    try words.appendSlice("how ");
+    while (args.next()) |item| {
+        try words.appendSlice(item);
+        try words.append(' ');
+    }
+
+    const prompt = words.items;
+
+    var req = FetchReq.init(allocator);
     defer req.deinit();
 
     const data = ChatCompelitionRequestBody{
@@ -113,13 +126,13 @@ pub fn main() !void {
             },
             ChatMessage{
                 .role = "user",
-                .content = "how to get the size of directory",
+                .content = prompt,
             },
         },
     };
 
-    const json_data = try std.json.stringifyAlloc(gpa, data, .{});
-    defer gpa.free(json_data);
+    const json_data = try std.json.stringifyAlloc(allocator, data, .{});
+    defer allocator.free(json_data);
 
     const res = try req.post(OPENAI_URL, json_data);
 
@@ -131,7 +144,7 @@ pub fn main() !void {
         std.process.exit(1);
     }
 
-    const parsed = try std.json.parseFromSlice(ChatCompletionResponseBody, gpa, body, .{ .ignore_unknown_fields = true });
+    const parsed = try std.json.parseFromSlice(ChatCompletionResponseBody, allocator, body, .{ .ignore_unknown_fields = true });
     defer parsed.deinit();
 
     const content = parsed.value.choices[0].message.content;
@@ -140,11 +153,35 @@ pub fn main() !void {
 
     const description = it.first();
 
+    var commands = std.ArrayList(u8).init(allocator);
+    defer commands.deinit();
+
+    try commands.appendSlice("echo \"");
+
+    // print out commands
     std.debug.print("\x1b[1;34m\n{s}\n\n\x1b[0m", .{description});
+    while (it.next()) |command| {
+        try commands.appendSlice(command);
 
-    while (it.next()) |x| {
-        std.debug.print("\x1b[1;90m\t$ {s}\n\x1b[0m", .{x});
+        if (it.rest().len != 0) {
+            try commands.appendSlice(" && ");
+        }
+
+        std.debug.print("\x1b[1;90m\t$ {s}\n\x1b[0m", .{command});
     }
-
     std.debug.print("\n", .{});
+
+    try commands.appendSlice("\" | pbcopy");
+
+    const some: []const u8 = commands.items;
+
+    std.debug.print("{s}", .{some});
+
+    // copy commands to clipboard
+    _ = try std.ChildProcess.run(.{
+        .allocator = allocator,
+        .argv = &[_][]const u8{ "sh", "-c", some },
+    });
+
+    std.process.exit(0);
 }
