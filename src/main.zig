@@ -27,7 +27,7 @@ const systemPrompt =
 ;
 
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = "";
+const API_KEY = "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";
 
 const Client = http.Client;
 const RequestOptions = Client.RequestOptions;
