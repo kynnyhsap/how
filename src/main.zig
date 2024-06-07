@@ -26,11 +26,18 @@ const systemPrompt =
     \\go install main
 ;
 
+const DEFAULT_MODEL = "gpt-4o";
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions";
 const API_KEY = "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";
 
 const Client = http.Client;
 const RequestOptions = Client.RequestOptions;
+
+const Config = struct {
+    url: ?[]const u8,
+    model: ?[]const u8,
+    api_key: ?[]const u8,
+};
 
 const ChatMessage = struct {
     role: []const u8,
@@ -94,12 +101,27 @@ const FetchReq = struct {
     }
 };
 
+fn readConfig(allocator: std.mem.Allocator, path: []const u8) !std.json.Parsed(Config) {
+    const data = try std.fs.cwd().readFileAlloc(allocator, path, 1024);
+    defer allocator.free(data);
+
+    const config = try std.json.parseFromSlice(Config, allocator, data, .{
+        // .ignore_unknown_fields = true,
+    });
+
+    return config;
+}
+
 pub fn main() !void {
     var gpa = heap.GeneralPurposeAllocator(.{}){};
     defer if (gpa.deinit() == .leak) {
         std.log.warn("🚰 leaked 🚰 \n", .{});
     };
     const allocator = gpa.allocator();
+
+    const parsedConfig = try readConfig(allocator, "config.json");
+    defer parsedConfig.deinit();
+    const config = parsedConfig.value;
 
     var words = std.ArrayList(u8).init(allocator);
     defer words.deinit();
@@ -118,7 +140,7 @@ pub fn main() !void {
     defer req.deinit();
 
     const data = ChatCompelitionRequestBody{
-        .model = "gpt-4o",
+        .model = config.model orelse DEFAULT_MODEL,
         .messages = &[_]ChatMessage{
             ChatMessage{
                 .role = "system",
@@ -134,7 +156,7 @@ pub fn main() !void {
     const json_data = try std.json.stringifyAlloc(allocator, data, .{});
     defer allocator.free(json_data);
 
-    const res = try req.post(OPENAI_URL, json_data);
+    const res = try req.post(config.url orelse OPENAI_URL, json_data);
 
     const body = try req.body.toOwnedSlice();
     defer req.allocator.free(body);
