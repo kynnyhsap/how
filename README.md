@@ -2,6 +2,10 @@
 
 Ask a cli tool about other cli tools.
 
+```bash
+how to exit vim
+```
+
 <img src="./demo.gif">
 
 ## Installation
@@ -10,7 +14,19 @@ Ask a cli tool about other cli tools.
 
 ## Usage
 
-Just type any request starting with `how`:
+Firs you will need to set `api key` (gpt-4o is a default model):
+
+```bash
+how -k <your_api_key>
+```
+
+You can verify it by viewing config:
+
+```bash
+how --config
+```
+
+And then just type any request starting with `how`:
 
 ```bash
 how to create a git branch
@@ -25,6 +41,16 @@ how to upgrade node to latest version
 ```
 
 <img src="./demo.gif">
+
+### Providers
+
+Supported providers:
+
+- [x] `openai` - (OpenAPI GPT)[https://chatgpt.com/] models (defaul)
+- [ ] `groq` - (Groq)[https://groq.com/] models
+- [ ] `claude` - (Claude Anthropic)[https://claude.ai/] models
+- [ ] `ollama` - (Ollama)[https://ollama.com/] models, on-device inference
+- [ ] `custom` - Custom provider
 
 ## Development
 

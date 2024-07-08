@@ -9,6 +9,12 @@ export async function openAIProvider(
   prompt: string,
   config: Config,
 ): Promise<ProviderResult> {
+  if (!config.apiKey) {
+    throw new Error(
+      "API key isn't set. Please run `how -k <API_KEY>` to set OpenAI API key. You can get an API here https://platform.openai.com/account/api-keys",
+    );
+  }
+
   const resp = await fetch(OPEN_AI_URL, {
     method: "POST",
     headers: {
