@@ -17,5 +17,3 @@ Building and installing a Go binary
 go build main.go
 go install main
 `;
-
-export const USER_PROMPT = "how " + Bun.argv.slice(2).join(" ");

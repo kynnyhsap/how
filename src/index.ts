@@ -1,7 +1,8 @@
 import { parseArgs } from "util";
-import { main } from "./main";
-import { setApiKey } from "./set-api-key";
-import { getConfig } from "./config";
+import { printVersion } from "./commands/version";
+import { printConfig } from "./commands/print-config";
+import { setApiKey } from "./commands/set-api-key";
+import { main } from "./commands/main";
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -19,13 +20,11 @@ const { values } = parseArgs({
 });
 
 if (values.version) {
-  console.log(`v0.1.0`);
+  printVersion();
 } else if (values.help) {
   console.log(`TODO`);
-} else if (values.help) {
-  const config = await getConfig();
-
-  console.log(JSON.stringify(config, null, 2));
+} else if (values.config) {
+  await printConfig();
 } else if (typeof values.key === "string") {
   await setApiKey(values.key);
 } else {

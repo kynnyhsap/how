@@ -1,18 +1,14 @@
 import os from "os";
 import path from "path";
+import { Providers } from "./providers";
 
 export const CONFIG_PATH = path.join(os.homedir(), ".how/config.json");
 
-export const OPEN_AI_URL = "https://api.openai.com/v1/chat/completions";
-
-export const DEFAULT_URL = OPEN_AI_URL;
-export const DEFAULT_MODEL = "gpt-4o";
-
 export type Config = {
-  url: string;
-  model: string;
+  provider?: Providers;
+  url?: string;
+  model?: string;
   apiKey?: string;
-  copy?: boolean;
 };
 
 export async function getConfig(): Promise<Config> {
@@ -20,13 +16,11 @@ export async function getConfig(): Promise<Config> {
 
   const exists = await configFile.exists();
 
-  const config: Partial<Config> = (await configFile.exists())
-    ? await configFile.json()
-    : {};
+  const config = exists ? await configFile.json() : {};
 
-  return {
-    url: config.url ?? DEFAULT_URL,
-    model: config.model ?? DEFAULT_MODEL,
-    apiKey: config.apiKey,
-  };
+  if (!config.provider) {
+    config.provider = Providers.OpenAI;
+  }
+
+  return config;
 }
