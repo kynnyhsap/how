@@ -1,3 +1,5 @@
+import packageInfo from "../../package.json" assert { type: "json" };
+
 export function printVersion() {
-  console.log(`v0.1.0`);
+	console.log(packageInfo.version);
 }

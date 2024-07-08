@@ -1,47 +1,50 @@
-import { ProviderResult } from ".";
-import { Config } from "../config";
+import type { ProviderResult } from ".";
+import type { Config } from "../config";
 import { SYSTEM_PROMPT } from "../systemPrompt";
 
-const OPEN_AI_URL = "https://api.openai.com/v1/chat/completions";
-const DEFAULT_MODEL = "gpt-4o";
-
 export async function openAIProvider(
-  prompt: string,
-  config: Config,
+	prompt: string,
+	config: Config,
 ): Promise<ProviderResult> {
-  if (!config.apiKey) {
-    throw new Error(
-      "API key isn't set. Please run `how -k <API_KEY>` to set OpenAI API key. You can get an API here https://platform.openai.com/account/api-keys",
-    );
-  }
+	const API_URL = config.url ?? "https://api.openai.com/v1/chat/completions";
+	const DEFAULT_MODEL = config.model ?? "gpt-4o";
 
-  const resp = await fetch(OPEN_AI_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${config.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: config.model ?? DEFAULT_MODEL,
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: prompt },
-      ],
-    }),
-  });
+	const headers = {
+		"Content-Type": "application/json",
+		Authorization: "",
+	};
 
-  if (resp.status !== 200) {
-    throw new Error(await resp.text());
-  }
+	if (API_URL.includes("api.openai.com")) {
+		if (!config.apiKey) {
+			throw new Error(
+				"API key isn't set. Please run `how -k <API_KEY>` to set OpenAI API key. You can get an API here https://platform.openai.com/account/api-keys",
+			);
+		}
+		headers.Authorization = `Bearer ${config.apiKey}`;
+	}
 
-  const data = await resp.json();
+	const resp = await fetch(API_URL, {
+		method: "POST",
+		headers: headers,
+		body: JSON.stringify({
+			model: config.model ?? DEFAULT_MODEL,
+			messages: [
+				{ role: "system", content: SYSTEM_PROMPT },
+				{ role: "user", content: prompt },
+			],
+		}),
+	});
 
-  const content: string = data.choices?.[0]?.message?.content ?? "";
+	if (resp.status !== 200) {
+		throw new Error(await resp.text());
+	}
 
-  const [description, ...commands] = content.split("\n");
+	const data = await resp.json();
+	const content: string = data.choices?.[0]?.message?.content ?? "";
+	const [description, ...commands] = content.split("\n");
 
-  return {
-    commands,
-    description,
-  };
+	return {
+		commands,
+		description,
+	};
 }

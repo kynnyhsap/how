@@ -1,4 +1,4 @@
-import os from "os";
+import os from "node:os";
 
 export const SYSTEM_PROMPT = `
 You are "how", a CLI command generator.

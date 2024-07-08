@@ -1,5 +1,5 @@
 node_modules/
-
-.env
-
 out/
+.env
+.env.*
+.DS_Store
