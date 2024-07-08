@@ -1,19 +1,12 @@
-# how
+# how cli
 
-CLI tool to ask AI for commands in plain english.
+Ask a cli tool about other cli tools.
 
-## Roadmap
-
-- [x] basic functionality
-- [ ] installation script
-- [ ] versioning
-- [ ] local inference
-- [ ] fine-tuned llm
-- [ ] rewrite in zig for smaler binary
+<img src="./demo.gif">
 
 ## Installation
 
-> Comming soon...
+> Instation script for all platforms comming soon...
 
 ## Usage
 
@@ -35,20 +28,28 @@ how to upgrade node to latest version
 
 ## Development
 
+> You will need `bun` for this.
+
 To install dependencies:
 
 ```bash
 bun install
 ```
 
-To run:
+To run form source:
 
 ```bash
-bun how
+bun how to do ...
 ```
 
-To compile:
+To compile from source:
 
 ```bash
 bun compile
+```
+
+To install compiled binary:
+
+```bash
+sudo cp ./how /usr/local/bin/how
 ```

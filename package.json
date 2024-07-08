@@ -1,10 +1,12 @@
 {
   "name": "how",
+  "version": "0.1.0",
+  "description": "Ask a cli tool about other cli tools.",
   "module": "./src/index.ts",
   "type": "module",
   "scripts": {
     "how": "bun run ./src/index.ts --",
-    "compile": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how"
+    "compile": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how && chmod +x ./how"
   },
   "dependencies": {
     "chalk": "^5.3.0",
