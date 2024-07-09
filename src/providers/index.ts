@@ -1,44 +1,29 @@
-import type { Config } from "../config";
-import { openAIProvider } from "./openai";
+import { DEFAULT_PROVIDER, ProviderSpec, ProviderType } from "./common";
 
-export type ProviderResult = {
-	commands: string[];
-	description: string;
+import { anthropicProviderSpec } from "./anthropic.provider";
+import { customProviderSpec } from "./custom.provider";
+import { groqProviderSpec } from "./groq.provider";
+import { ollamaProviderSpec } from "./ollama.provider";
+import { openaiProviderSpec } from "./openai.provider";
+
+export const PROVIDER_SPECS: Record<ProviderType, ProviderSpec> = {
+	[ProviderType.Ollama]: ollamaProviderSpec,
+
+	[ProviderType.Groq]: groqProviderSpec,
+	[ProviderType.OpenAI]: openaiProviderSpec,
+	[ProviderType.Anthropic]: anthropicProviderSpec,
+
+	[ProviderType.Custom]: customProviderSpec,
 };
 
-export enum Providers {
-	OpenAI = "openai",
-	Claude = "claude",
-	Ollama = "ollama",
-	Groq = "groq",
-	Custom = "custom",
-}
-
-type Provider = (prompt: string, config: Config) => Promise<ProviderResult>;
-
-async function notImplementedProvider(prompt: string): Promise<ProviderResult> {
-	throw new Error("Provider not implemented");
-}
-
-const providers: Record<Providers, Provider> = {
-	[Providers.OpenAI]: openAIProvider,
-	[Providers.Claude]: notImplementedProvider,
-	[Providers.Ollama]: notImplementedProvider,
-	[Providers.Groq]: notImplementedProvider,
-	[Providers.Custom]: notImplementedProvider,
-};
-
-export async function executeProvider(
-	prompt: string,
-	config: Config,
-): Promise<ProviderResult> {
-	const provider = config.provider ? providers[config.provider] : undefined;
-
-	if (!provider) {
-		throw new Error(
-			`Provider not found "${config.provider}" is invalid. Please use one of: ${Object.keys(providers).join(", ")}`,
+export function getProviderSpec(provider: ProviderType | string | undefined) {
+	if (!Object.values(ProviderType).includes(provider as ProviderType)) {
+		console.warn(
+			`Unknown provider "${provider}" detected in config. Defaulting to "${DEFAULT_PROVIDER}"`,
 		);
+
+		return PROVIDER_SPECS[DEFAULT_PROVIDER];
 	}
 
-	return provider(prompt, config);
+	return PROVIDER_SPECS[provider as ProviderType];
 }

@@ -1,10 +1,6 @@
-# how cli
+# how-cli
 
-Ask a cli tool about other cli tools.
-
-```bash
-how to exit vim
-```
+Ask your terminal about cli commands (with AI)
 
 <img src="./demo.gif">
 
@@ -14,19 +10,47 @@ how to exit vim
 
 ## Usage
 
-Firs you will need to set `api key` (gpt-4o is a default model):
-
 ```bash
-how -k <your_api_key>
+how to [prompt...]
 ```
 
-You can verify it by viewing config:
+But first you will need to set `apiKey` with:
+
+```bash
+how -k
+```
+
+or
+
+```bash
+how --key
+```
+
+The default provider is `openai`, but you can change it with:
+
+```bash
+how -p
+```
+
+or
+
+```bash
+how --provider
+```
+
+You can verify it by viewing config with:
+
+```bash
+how -c
+```
+
+or
 
 ```bash
 how --config
 ```
 
-And then just type any request starting with `how`:
+And then just type any request starting with `how to`:
 
 ```bash
 how to create a git branch
@@ -46,15 +70,15 @@ how to upgrade node to latest version
 
 Supported providers:
 
-- [x] `openai` - (OpenAPI GPT)[https://chatgpt.com/] models (defaul)
-- [ ] `groq` - (Groq)[https://groq.com/] models
-- [ ] `claude` - (Claude Anthropic)[https://claude.ai/] models
-- [ ] `ollama` - (Ollama)[https://ollama.com/] models, on-device inference
+- [x] `openai` - [OpenAPI GPT](https://chatgpt.com/) models (default)
+- [x] `anthropic` - [Anthropic](https://claude.ai/) models
+- [x] `groq` - [Groq](https://groq.com/) models
+- [x] `ollama` - [Ollama](https://ollama.com/) models, on-device inference
 - [ ] `custom` - Custom provider
 
 ## Development
 
-> You will need `bun` for this.
+> You will need [bun](https://bun.sh/) for this.
 
 To install dependencies:
 
@@ -65,7 +89,7 @@ bun install
 To run form source:
 
 ```bash
-bun how to do ...
+bun how [arguments...]
 ```
 
 To compile from source:
@@ -77,5 +101,5 @@ bun compile
 To install compiled binary:
 
 ```bash
-sudo cp ./how /usr/local/bin/how
+bun replace-bin
 ```

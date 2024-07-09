@@ -1,14 +1,20 @@
 import chalk from "chalk";
 import clipboard from "clipboardy";
 import { getConfig } from "../config";
-import { executeProvider } from "../providers";
+import { getProviderSpec } from "../providers";
+import { loader } from "../loader";
 
-export async function main() {
+export async function mainCommand() {
 	const config = await getConfig();
 
 	const prompt = `how ${Bun.argv.slice(2).join(" ")}`;
 
-	const { commands, description } = await executeProvider(prompt, config);
+	loader.start();
+
+	const { func } = getProviderSpec(config.provider);
+	const { commands, description } = await func(prompt, config);
+
+	loader.stop();
 
 	console.log("");
 	console.log(chalk.green.bold(description));
