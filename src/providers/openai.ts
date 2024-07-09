@@ -1,4 +1,4 @@
-import { ProviderResult } from ".";
+import { parseJSONResponse, ProviderResult } from ".";
 import { Config } from "../config";
 import { SYSTEM_PROMPT } from "../systemPrompt";
 
@@ -11,7 +11,7 @@ export async function openAIProvider(
 ): Promise<ProviderResult> {
   if (!config.apiKey) {
     throw new Error(
-      "API key isn't set. Please run `how -k <API_KEY>` to set OpenAI API key. You can get an API here https://platform.openai.com/account/api-keys",
+      "API key isn't set. Please run `how -k <API_KEY>` to set OpenAI API key. You can get your API here https://platform.openai.com/account/api-keys",
     );
   }
 
@@ -27,21 +27,17 @@ export async function openAIProvider(
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
       ],
+      response_format: {
+        type: "json_object",
+      },
     }),
   });
 
-  if (resp.status !== 200) {
-    throw new Error(await resp.text());
-  }
-
   const data = await resp.json();
 
-  const content: string = data.choices?.[0]?.message?.content ?? "";
+  if (resp.status !== 200) {
+    throw new Error(data.error.message);
+  }
 
-  const [description, ...commands] = content.split("\n");
-
-  return {
-    commands,
-    description,
-  };
+  return parseJSONResponse(data.choices?.[0]?.message?.content);
 }

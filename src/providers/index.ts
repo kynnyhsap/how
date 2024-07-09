@@ -1,4 +1,5 @@
 import { Config } from "../config";
+import { claudeAnthropicProvider } from "./claude";
 import { groqCloudProvider } from "./groq";
 import { openAIProvider } from "./openai";
 
@@ -22,9 +23,24 @@ async function notImplementedProvider(prompt: string): Promise<ProviderResult> {
   throw new Error("Provider not implemented");
 }
 
+export function parseJSONResponse(json: string): ProviderResult {
+  try {
+    const { description, commands } = JSON.parse(json);
+
+    return {
+      description: description ?? "",
+      commands: commands ?? [],
+    };
+  } catch (error) {
+    throw new Error(
+      `Failed to parse "description" and "commands" from LLM response: ${json}. \n${error.message}`,
+    );
+  }
+}
+
 const providers: Record<Providers, Provider> = {
   [Providers.OpenAI]: openAIProvider,
-  [Providers.Claude]: notImplementedProvider,
+  [Providers.Claude]: claudeAnthropicProvider,
   [Providers.Ollama]: notImplementedProvider,
   [Providers.Groq]: groqCloudProvider,
   [Providers.Custom]: notImplementedProvider,

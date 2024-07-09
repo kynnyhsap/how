@@ -1,9 +1,10 @@
-import { ProviderResult } from ".";
+import { parseJSONResponse, ProviderResult } from ".";
 import { Config } from "../config";
 import { SYSTEM_PROMPT } from "../systemPrompt";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const DEFAULT_MODEL = "llama3-70b-8192";
+const DEFAULT_MODEL = "llama3-8b-8192";
+// const DEFAULT_MODEL = "llama3-70b-8192";
 
 export async function groqCloudProvider(
   prompt: string,
@@ -27,21 +28,17 @@ export async function groqCloudProvider(
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: prompt },
       ],
+      response_format: {
+        type: "json_object",
+      },
     }),
   });
 
-  if (resp.status !== 200) {
-    throw new Error(await resp.text());
-  }
-
   const data = await resp.json();
 
-  const content: string = data.choices?.[0]?.message?.content ?? "";
+  if (resp.status !== 200) {
+    throw new Error(data.error.message);
+  }
 
-  const [description, ...commands] = content.split("\n");
-
-  return {
-    commands,
-    description,
-  };
+  return parseJSONResponse(data.choices?.[0]?.message?.content);
 }

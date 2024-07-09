@@ -3,6 +3,7 @@ import { printVersion } from "./commands/version";
 import { printConfig } from "./commands/print-config";
 import { setApiKey } from "./commands/set-api-key";
 import { main } from "./commands/main";
+import { loader } from "./loader";
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -28,5 +29,10 @@ if (values.version) {
 } else if (typeof values.key === "string") {
   await setApiKey(values.key);
 } else {
-  await main();
+  try {
+    await main();
+  } catch (e) {
+    console.error(e.message);
+    process.exit(1);
+  }
 }
