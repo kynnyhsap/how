@@ -3,7 +3,7 @@
 Ask a cli tool about other cli tools.
 
 ```bash
-how to exit vim
+how to remove all .php files
 ```
 
 <img src="./demo.gif">
@@ -15,7 +15,7 @@ how to exit vim
 ## Usage
 
 ```bash
-bun how to [prompt...]
+how to [prompt...]
 ```
 
 But first you will need to set `apiKey` with:
