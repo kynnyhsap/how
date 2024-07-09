@@ -1,10 +1,11 @@
 import { parseArgs } from "util";
-import { printVersion } from "./commands/version";
-import { printConfig } from "./commands/print-config";
-import { setApiKey } from "./commands/set-api-key";
-import { main } from "./commands/main";
-import { loader } from "./loader";
-import { setProvider } from "./commands/set-provider";
+
+import { providerCommand } from "./commands/provider.command";
+import { configCommand } from "./commands/config.command";
+import { apiKeyCommand } from "./commands/api-key.command";
+import { versionCommand } from "./commands/version.command";
+import { mainCommand } from "./commands/main.command";
+import { helpCommand } from "./commands/help.command";
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -39,18 +40,18 @@ const { values } = parseArgs({
 });
 
 if (values.version) {
-  printVersion();
+  versionCommand();
 } else if (values.help) {
-  console.log(`TODO`);
+  helpCommand();
 } else if (values.config) {
-  await printConfig();
-} else if (typeof values.key === "string") {
-  await setApiKey(values.key);
-} else if (typeof values.provider === "string") {
-  await setProvider(values.provider);
+  await configCommand();
+} else if (values.key) {
+  await apiKeyCommand();
+} else if (values.provider) {
+  await providerCommand();
 } else {
   try {
-    await main();
+    await mainCommand();
   } catch (e) {
     console.error(e.message);
     process.exit(1);

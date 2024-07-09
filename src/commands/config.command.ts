@@ -1,11 +1,11 @@
 import { getConfig } from "../config";
-import { maskApiKey } from "./set-api-key";
+import { mask } from "../mask";
 
-export async function printConfig() {
+export async function configCommand() {
   const config = await getConfig();
 
   if (config.apiKey) {
-    config.apiKey = maskApiKey(config.apiKey);
+    config.apiKey = mask(config.apiKey);
   }
 
   console.log(JSON.stringify(config, null, 2));

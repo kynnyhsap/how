@@ -1,11 +1,11 @@
 import os from "os";
 import path from "path";
-import { Providers } from "./providers";
+import { DEFAULT_PROVIDER, ProviderType } from "./providers/common";
 
 export const CONFIG_PATH = path.join(os.homedir(), ".how/config.json");
 
 export type Config = {
-  provider?: Providers;
+  provider?: ProviderType | string;
   url?: string;
   model?: string;
   apiKey?: string;
@@ -19,7 +19,7 @@ export async function getConfig(): Promise<Config> {
   const config = exists ? await configFile.json() : {};
 
   if (!config.provider) {
-    config.provider = Providers.OpenAI;
+    config.provider = DEFAULT_PROVIDER;
   }
 
   return config;
