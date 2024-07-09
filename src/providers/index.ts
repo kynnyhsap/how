@@ -1,4 +1,5 @@
 import { Config } from "../config";
+import { groqCloudProvider } from "./groq";
 import { openAIProvider } from "./openai";
 
 export type ProviderResult = {
@@ -25,7 +26,7 @@ const providers: Record<Providers, Provider> = {
   [Providers.OpenAI]: openAIProvider,
   [Providers.Claude]: notImplementedProvider,
   [Providers.Ollama]: notImplementedProvider,
-  [Providers.Groq]: notImplementedProvider,
+  [Providers.Groq]: groqCloudProvider,
   [Providers.Custom]: notImplementedProvider,
 };
 
