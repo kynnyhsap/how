@@ -14,19 +14,47 @@ how to exit vim
 
 ## Usage
 
-Firs you will need to set `api key` (gpt-4o is a default model):
-
 ```bash
-how -k <your_api_key>
+bun how to [prompt...]
 ```
 
-You can verify it by viewing config:
+But first you will need to set `apiKey` with:
+
+```bash
+how -k
+```
+
+or
+
+```bash
+how --key
+```
+
+The default provider is `openai`, but you can change it with:
+
+```bash
+how -p
+```
+
+or
+
+```bash
+how --provider
+```
+
+You can verify it by viewing config with:
+
+```bash
+how -c
+```
+
+or
 
 ```bash
 how --config
 ```
 
-And then just type any request starting with `how`:
+And then just type any request starting with `how to`:
 
 ```bash
 how to create a git branch
@@ -65,7 +93,7 @@ bun install
 To run form source:
 
 ```bash
-bun how to do ...
+bun how to [prompt...]
 ```
 
 To compile from source:
