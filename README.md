@@ -46,10 +46,10 @@ how to upgrade node to latest version
 
 Supported providers:
 
-- [x] `openai` - (OpenAPI GPT)[https://chatgpt.com/] models (defaul)
-- [ ] `groq` - (Groq)[https://groq.com/] models
-- [ ] `claude` - (Claude Anthropic)[https://claude.ai/] models
-- [ ] `ollama` - (Ollama)[https://ollama.com/] models, on-device inference
+- [x] `openai` - [OpenAPI GPT](https://chatgpt.com/) models (default)
+- [x] `anthropic` - [Anthropic](https://claude.ai/) models
+- [x] `groq` - [Groq](https://groq.com/) models
+- [x] `ollama` - [Ollama](https://ollama.com/) models, on-device inference
 - [ ] `custom` - Custom provider
 
 ## Development

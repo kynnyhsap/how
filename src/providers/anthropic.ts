@@ -5,7 +5,7 @@ import { SYSTEM_PROMPT } from "../systemPrompt";
 const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const DEFAULT_MODEL = "claude-3-5-sonnet-20240620";
 
-export async function claudeAnthropicProvider(
+export async function anthropicProvider(
   prompt: string,
   config: Config,
 ): Promise<ProviderResult> {

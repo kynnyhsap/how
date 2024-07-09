@@ -1,7 +1,8 @@
 import { Config } from "../config";
-import { claudeAnthropicProvider } from "./claude";
-import { groqCloudProvider } from "./groq";
-import { openAIProvider } from "./openai";
+import { anthropicProvider } from "./anthropic";
+import { groqProvider } from "./groq";
+import { ollamaProvider } from "./ollama";
+import { openaiProvider } from "./openai";
 
 export type ProviderResult = {
   commands: string[];
@@ -10,7 +11,7 @@ export type ProviderResult = {
 
 export enum Providers {
   OpenAI = "openai",
-  Claude = "claude",
+  Anthropic = "anthropic",
   Ollama = "ollama",
   Groq = "groq",
 
@@ -39,10 +40,10 @@ export function parseJSONResponse(json: string): ProviderResult {
 }
 
 const providers: Record<Providers, Provider> = {
-  [Providers.OpenAI]: openAIProvider,
-  [Providers.Claude]: claudeAnthropicProvider,
-  [Providers.Ollama]: notImplementedProvider,
-  [Providers.Groq]: groqCloudProvider,
+  [Providers.OpenAI]: openaiProvider,
+  [Providers.Anthropic]: anthropicProvider,
+  [Providers.Ollama]: ollamaProvider,
+  [Providers.Groq]: groqProvider,
   [Providers.Custom]: notImplementedProvider,
 };
 

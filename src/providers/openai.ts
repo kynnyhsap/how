@@ -5,7 +5,7 @@ import { SYSTEM_PROMPT } from "../systemPrompt";
 const OPEN_AI_URL = "https://api.openai.com/v1/chat/completions";
 const DEFAULT_MODEL = "gpt-4o";
 
-export async function openAIProvider(
+export async function openaiProvider(
   prompt: string,
   config: Config,
 ): Promise<ProviderResult> {
