@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "how": "bun run ./src/index.ts --",
-    "compile": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how && chmod +x ./how"
+    "compile": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how && chmod +x ./how",
+    "replace-bin": "sudo mv ./how /usr/local/bin/how"
   },
   "dependencies": {
     "chalk": "^5.3.0",

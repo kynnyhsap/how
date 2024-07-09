@@ -24,3 +24,7 @@ export async function getConfig(): Promise<Config> {
 
   return config;
 }
+
+export async function saveConfig(config: Config) {
+  await Bun.write(CONFIG_PATH, JSON.stringify(config, null, 2));
+}

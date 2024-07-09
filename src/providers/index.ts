@@ -55,7 +55,7 @@ export async function executeProvider(
 
   if (!provider) {
     throw new Error(
-      `Provider not found "${config.provider}" is invalid. Please use one of: ${Object.keys(providers).join(", ")}`,
+      `Provider "${config.provider}" is invalid. Please use one of: ${Object.keys(providers).join(", ")}`,
     );
   }
 

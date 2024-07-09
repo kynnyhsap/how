@@ -1,7 +1,16 @@
-import { CONFIG_PATH, getConfig } from "../config";
+import { getConfig, saveConfig } from "../config";
 
-export function maskApiKey(apiKey: string) {
-  return apiKey.slice(0, 2) + "*".repeat(apiKey.length - 2);
+const maskLenght = 3;
+export function maskApiKey(k?: string) {
+  if (!k) {
+    return "";
+  }
+
+  return (
+    k.slice(0, maskLenght) +
+    "*".repeat(k.length - maskLenght * 2) +
+    k.slice(-maskLenght)
+  );
 }
 
 export async function setApiKey(apiKey: string) {
@@ -9,7 +18,7 @@ export async function setApiKey(apiKey: string) {
 
   config.apiKey = apiKey;
 
-  await Bun.write(CONFIG_PATH, JSON.stringify(config, null, 2));
+  await saveConfig(config);
 
   console.log(`API key updated: ${maskApiKey(apiKey)}`);
 }
