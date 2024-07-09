@@ -2,7 +2,6 @@ import { select } from "@inquirer/prompts";
 import { getProviderSpec, PROVIDER_SPECS } from "../providers";
 import { getConfig, saveConfig } from "../config";
 import chalk from "chalk";
-import { ProviderType } from "../providers/common";
 
 export async function providerCommand() {
   const config = await getConfig();
