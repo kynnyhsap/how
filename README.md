@@ -1,10 +1,6 @@
 # how-cli
 
-Ask a cli tool about other cli tools.
-
-```bash
-how to remove all .php files
-```
+Ask your terminal about cli commands (with AI)
 
 <img src="./demo.gif">
 
