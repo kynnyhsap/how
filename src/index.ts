@@ -18,7 +18,7 @@ const { values } = parseArgs({
       type: "boolean",
       short: "v",
     },
-    confing: {
+    config: {
       type: "boolean",
       short: "c",
     },

@@ -29,6 +29,5 @@ export async function providerCommand() {
 
   console.log("");
   console.log("Provider updated to " + chalk.green.bold(config.provider));
-
-  // TODO: do you wanna set API key here?
+  console.log("Don't forget to update your API key if needed.");
 }
