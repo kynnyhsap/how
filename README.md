@@ -1,4 +1,4 @@
-# how cli
+# how-cli
 
 Ask a cli tool about other cli tools.
 
@@ -82,7 +82,7 @@ Supported providers:
 
 ## Development
 
-> You will need `bun` for this.
+> You will need [bun](https://bun.sh/) for this.
 
 To install dependencies:
 
@@ -93,7 +93,7 @@ bun install
 To run form source:
 
 ```bash
-bun how to [prompt...]
+bun how [arguments...]
 ```
 
 To compile from source:
@@ -105,5 +105,5 @@ bun compile
 To install compiled binary:
 
 ```bash
-sudo cp ./how /usr/local/bin/how
+bun replace-bin
 ```

@@ -9,10 +9,13 @@ import { helpCommand } from "./commands/help.command";
 
 const { values } = parseArgs({
   args: Bun.argv,
+  strict: false,
+  allowPositionals: true,
   options: {
     help: {
       type: "boolean",
       short: "h",
+      description: "Get help for commands",
     },
     version: {
       type: "boolean",
@@ -35,8 +38,6 @@ const { values } = parseArgs({
       short: "m",
     },
   },
-  strict: false,
-  allowPositionals: true,
 });
 
 if (values.version) {
