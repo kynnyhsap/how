@@ -108,6 +108,14 @@ To compile executable from source:
 bun compile-dev
 ```
 
+## Benchmarks
+
+What I observed using differnet models:
+
+- `groq` (llama3-8b) is the fastest, **average response time is under half a second**.
+- `ollama` (llama3-8b) is the slowest, **average response time is about 3 seconds**. And also there is a cold start that takes about 8 seconds (I guess the model loads itself into RAM)
+- `openai` (gpt-4o) and `anthropic` (claude-3-5-sonnet) are in between, **average response time is about 2 seconds**. They also seem to have better results than llama3-8b.
+
 ## Cross-Compile
 
 Thre is a `compile.sh` script to cross-compile for multiple platforms. You can run it with:
