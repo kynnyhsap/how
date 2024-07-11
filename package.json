@@ -6,10 +6,7 @@
   "type": "module",
   "scripts": {
     "how": "bun run ./src/index.ts --",
-    "compile-dev": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how && chmod +x ./how",
-    "replace-bin": "mv ./how $HOME/bin/how",
-    "compile": "bun run ./scripts/compile.ts",
-    "release": "bun run ./scripts/release.ts"
+    "compile-dev": "bun build ./src/index.ts --compile --minify --sourcemap --outfile how && chmod +x ./how"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.1.2",
