@@ -1,8 +1,10 @@
-# how
+# how-cli
 
-Ask your terminal about cli commands (with AI)
+Ask your terminal (AI) about cli commands
 
 <img src="./demo.gif">
+
+Yes, it's just an LLM wrapper. It saves me a lot of time. It will for you too.
 
 ## Installation
 
@@ -101,3 +103,21 @@ To compile executable from source:
 ```bash
 bun compile-dev
 ```
+
+## Cross-Compile
+
+Thre is a `compile.sh` script to cross-compile for multiple platforms. You can run it with:
+
+```bash
+./scripts/compile.sh
+```
+
+## Releases
+
+I do releases when I feel like it. There is a script to automate in in `scripts/release.sh`.
+
+Later I will add command to upgrade cli to latest version.
+
+## License
+
+MIT, you can go nuts with it.
