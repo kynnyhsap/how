@@ -1,7 +1,7 @@
 {
   "name": "how",
-  "version": "0.1.0",
-  "description": "Ask a cli tool about other cli tools.",
+  "version": "0.1.1",
+  "description": "Ask your terminal (AI) about cli commands",
   "module": "./src/index.ts",
   "type": "module",
   "scripts": {
