@@ -2,7 +2,7 @@
 
 Ask your terminal (AI) about cli commands
 
-<img src="./demo.gif">
+<img src="./demos/demo.gif">
 
 Yes, it's just an LLM wrapper. It saves me a lot of time. It will for you too.
 
@@ -24,6 +24,8 @@ Make sure to set **api key** first with `--key` flag:
 how --key
 ```
 
+<img src="./demos/api-key-demo.gif">
+
 > Default provider is `openai`. You can change it with `--provider` flag. See [providers](#providers) below for more info.
 
 Now you can prompt and adk `how` about cli commands:
@@ -39,6 +41,8 @@ The default provider is `openai`, but you can change it with `--provider` flag:
 ```bash
 how --provider
 ```
+
+<img src="./demos/provider-demo.gif">
 
 Changing provider means you also need to update the api key with `--key` flag.
 
@@ -77,10 +81,10 @@ how to convert video to gif with ffmpeg
 ```
 
 ```bash
-how to upgrade node to latest version
+how to compile a c file
 ```
 
-<img src="./demo.gif">
+<img src="./demos/demo.gif">
 
 ## Development
 
