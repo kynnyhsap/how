@@ -59,4 +59,9 @@ else
 fi
 
 echo "Installation complete."
+
 echo "Please restart your terminal or run 'source $PROFILE' to use the command."
+
+echo "Run 'how --help' to get started."
+
+
